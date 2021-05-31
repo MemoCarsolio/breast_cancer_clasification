@@ -35,6 +35,30 @@ def get_accuracy_score(model, x_test, y_test):
 
 
 def logistic_regression(x_train, y_train, x_test, y_test):
+    """
+    Logistic Regression
+    ---------------------------
+
+    Parameters
+    ----------
+
+    x_train: pd.Dataframe(),
+        x values of the training dataset
+    y_train: pd.Dataframe(),
+        y values of the training dataset
+    x_test: pd.Dataframe(),
+        x values of the testing dataset
+    y_test: pd.Dataframe(),
+        y values of the testing dataset
+
+    returns
+    -------
+    dict:
+        regression: LogisticRegression,
+            logistic regression model trained with the training datasets
+        accuracy: float,
+            accuracy value tested with the testing datasets
+    """
     regression = LogisticRegression(max_iter=7000)
     regression.fit(x_train, y_train)
     return {
