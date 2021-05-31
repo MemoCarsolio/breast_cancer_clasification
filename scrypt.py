@@ -3,7 +3,6 @@ Breast Cancer Tumor Classification
 Author: Guillermo Carsolio Gonzalez A01700041
 """
 import pandas as pd
-import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
@@ -69,11 +68,11 @@ def decision_tree(x_train, y_train, x_test, y_test):
         accuracy: float,
             accuracy value tested with the testing datasets
     """
-    tree = DecisionTreeClassifier(max_depth=5)
-    tree.fit(x_train, y_train)
+    tree_m = DecisionTreeClassifier(max_depth=3)
+    tree_m.fit(x_train, y_train)
     return {
-        'model': tree,
-        'accuracy': get_accuracy_score(tree, x_test, y_test)
+        'model': tree_m,
+        'accuracy': get_accuracy_score(tree_m, x_test, y_test)
     }
 
 
@@ -168,7 +167,7 @@ def get_models(x_train, y_train, x_test, y_test):
         Dictonary of models
     """
 
-    print('... Training models')
+    print('... Training models\n\n')
     models = {
         'Random Forest': random_forest(x_train, y_train, x_test, y_test),
         'Decision Tree': decision_tree(x_train, y_train, x_test, y_test),
@@ -182,7 +181,7 @@ def get_models(x_train, y_train, x_test, y_test):
             highest = models[mod]['accuracy']
             highest_model = mod
 
-    print('\nThe best model is --- ' + highest_model)
+    print('\nThe best model is --- ' + highest_model + '\n')
     return models
 
 
@@ -274,9 +273,8 @@ def predict_with_model(models, cols):
 
         elif want_multiple_models == 'y':
             for model in models:
-                print('Running... ' + model)
-                print('Tumor is predicted to be: ' +
-                      str(models[model]['model'].predict([user_values])))
+                print('\n' + model + ' --- Tumor is predicted to be: ' +
+                      str(models[model]['model'].predict([user_values])[0]))
             break
         else:
             print('INVALID INPUT --- try again')
@@ -302,6 +300,9 @@ def main():
 
     # Getting rid of unwanted instances
     df = df_cleaning(df, col, '?')
+    df['Class'] = df['Class'].replace([2], 'Benign')
+    df['Class'] = df['Class'].replace([4], 'Malignant')
+    print(df['Class'])
 
     # Splitting the Dataset into a training data set and a testing one
     df_x = df.loc[:, df.columns != 'Class']
