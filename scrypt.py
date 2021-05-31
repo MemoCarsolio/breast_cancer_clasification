@@ -326,7 +326,6 @@ def main():
     df = df_cleaning(df, col, '?')
     df['Class'] = df['Class'].replace([2], 'Benign')
     df['Class'] = df['Class'].replace([4], 'Malignant')
-    print(df['Class'])
 
     # Splitting the Dataset into a training data set and a testing one
     df_x = df.loc[:, df.columns != 'Class']
